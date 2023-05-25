@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import {FcGoogle} from 'react-icons/fc'
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { getProviders, signIn, signOut, useSession } from "next-auth/react";
+import { AppProps } from "next/app";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address").min(1, "Email is required"),
@@ -18,7 +21,12 @@ interface LoginFormValues {
 
 const LoginPage: NextPage = () => {
   const router = useRouter()
-  const login = api.login.add.useMutation()
+  // const providers = await getProviders()
+  // console.log(providers);
+  
+  const login = api.login.adds.useMutation({
+    
+  })
   const { register, handleSubmit, formState } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
@@ -28,13 +36,16 @@ const LoginPage: NextPage = () => {
     router.push(path)
   }
 
-  const onSubmit = (data: LoginFormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     // Handle login logic here
     console.log(data)
-    login.mutate({
-      email: data.email,
-      password: data.password
-    })
+    // login.
+    await signIn("credentials", {...data, redirect: false, callbackUrl: '/'})
+    
+    // login.mutate({
+    //   email: data.email,
+    //   password: data.password
+    // })
   };
 
   return (
@@ -104,11 +115,28 @@ const LoginPage: NextPage = () => {
                 {formState.isSubmitting ? "Signing in..." : "Sign in"}
               </button>
               {/* ? 'Signing in..' : 'Sign in' */}
+              <div className="divider">OR</div>
             </div>
-          </form>
+            <div className="">
+            {/* {Object.values(providers).map((provider) => { */}
+              {/* return ( */}
+            <button
+            // key={provider.id}
+            // , {redirect: false, callbackUrl: `${window.location.origin}`}
+            onClick={() => signIn("google")}
+            role="button"
+             className="flex items-center gap-2 bg-blue-700 text-white font-semibold rounded-md py-2 w-full justify-center text-sm" >
+              <FcGoogle className="text-2xl"/>
+              CONTINUE WITH GOOGLE
+            </button>
+              {/* )  */}
+            {/* })}  */}
+          </div>
           <div className="">
           <p className="pt-5">Don't have an account yet? <button className="font-semibold text-blue-600 indent-1" onClick={() => handleNavigation('/signup')}>Sign up</button></p>
           </div>
+          </form>
+         
         </div>
       {/* </div> */}
     </div>

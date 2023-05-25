@@ -5,46 +5,44 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const loginSchema = z.object({
-  firstName: z.string().min(3, {message: 'FirstName is required'}),
-  LastName: z.string().min(3, {message: 'LastName is required'}),
+  username: z.string().min(3),
   email: z.string().email("Invalid email address").min(1, "Email is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  
 });
 
 interface LoginFormValues {
-  firstName: string,
-  lastName: string,
+  username: string;
   email: string;
   password: string;
 }
 
-const RegisterPage: NextPage = () => { 
+// 2+2
+const signUpPage: NextPage = () => {
   const router = useRouter()
-  const handleNavigation = (path: string) => {
-    router.push(path)
-  }
-  const signup = api.signup.add.useMutation()
+  const signUp = api.signup.add.useMutation()
   const { register, handleSubmit, formState } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
   const [error, setError] = useState("");
 
-  
+  const handleNavigation = (path: string) => {
+    router.push(path)
+  }
 
-  const onSubmit = (data: LoginFormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     // Handle login logic here
     console.log(data)
-    
-    signup.mutate({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      password: data.password
-    })
+      const result = await signUp.mutateAsync({
+        username: data.username,
+        email: data.email,
+        password: data.password
+      })
+      if (result?.status === 201) {
+        handleNavigation('/')
+      }
   };
 
   return (
@@ -56,55 +54,30 @@ const RegisterPage: NextPage = () => {
         
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
-              >
-                First Name
-              </label>
-              <div className="mt-1">
-                <input
-                  id="firstName"
-                  // name="email"
-                  type="text"
-                  autoComplete="name"
-                  // required
-                  {...register("firstName")}
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm  " 
-                  placeholder='First Name'
-                />
-              </div>
-              {formState.errors.firstName && (
-                <p className="mt-2 text-sm text-red-600 ">
-                  {formState.errors.firstName.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Last Name
-              </label>
-              <div className="mt-1">
-                <input
-                  id="lastName"
-                  // name="email"
-                  type="text"
-                  autoComplete="name"
-                  // required
-                  {...register("lastName")}
-                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm  " 
-                  placeholder='Last Name'
-                />
-              </div>
-              {formState.errors.lastName && (
-                <p className="mt-2 text-sm text-red-600 ">
-                  {formState.errors.lastName.message}
-                </p>
-              )}
-            </div>
+ <label
+  htmlFor="Username"
+  className="block text-sm font-medium text-gray-700"
+>
+  Username
+</label>
+<div className="mt-1">
+  <input
+    id="username"
+    // name="email"
+    type="text"
+    autoComplete="name"
+    // required
+    {...register("username")}
+    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm  " 
+    placeholder='username'
+  />
+</div>
+{formState.errors.username && (
+  <p className="mt-2 text-sm text-red-600 ">
+    {formState.errors.username.message}
+  </p>
+)}
+</div>
             <div>
               <label
                 htmlFor="email"
@@ -132,7 +105,7 @@ const RegisterPage: NextPage = () => {
             </div>
             <div>
               <label
-                htmlFor="password"
+                htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
               >
                 Password
@@ -157,7 +130,6 @@ const RegisterPage: NextPage = () => {
             {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
             <div className="">
               <button
-              type="submit"
                 disabled={formState.isSubmitting}
                 className="border-transpa flex w-full justify-center rounded-md bg-indigo-600
                   px-4 py-2 text-sm font-medium text-white shadow-sm focus-within:outline-none hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-2"
@@ -167,11 +139,13 @@ const RegisterPage: NextPage = () => {
               {/* ? 'Signing in..' : 'Sign in' */}
             </div>
           </form>
-          <p className="pt-5">Already have an account?<button className="font-semibold text-blue-600 indent-1" onClick={() => handleNavigation('/signin')}>Login</button></p>
+          <div className="">
+          <p className="pt-5">Don't have an account yet? <button className="font-semibold text-blue-600 indent-1" onClick={() => handleNavigation('/signin')}>Sign in</button></p>
+          </div>
         </div>
       {/* </div> */}
     </div>
   );
 };
 
-export default RegisterPage
+export default signUpPage

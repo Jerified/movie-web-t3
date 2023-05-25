@@ -1,10 +1,21 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import {BiHome} from 'react-icons/bi'
+import {BiHome, BiUser, BiUserCircle} from 'react-icons/bi'
 import {BsBookmark} from 'react-icons/bs'
+import {GiHamburgerMenu} from "react-icons/gi"
 import {TbLogout, TbMovie} from 'react-icons/tb'
 import { signIn, signOut, useSession } from "next-auth/react";
 import { NextPage } from 'next';
+import { Button } from "@material-tailwind/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+// import {
+//   PresentationChartBarIcon,
+//   ShoppingBagIcon,
+//   UserCircleIcon,
+//   Cog6ToothIcon,
+//   InboxIcon,
+//   PowerIcon,
+// } from "@heroicons/react/24/solid";
 
 
 const SideBar: NextPage = () => {
@@ -15,10 +26,15 @@ const SideBar: NextPage = () => {
     router.push(path)
   }
   return (
-    <div className='pr-5 min-h-screen flex flex-col justify-evenly'>
-      <div className="">
+    <div className='pr- md:min-h-screen md:flex flex-col justify-evenly'>
+      <div className="flex justify-between  md:flex-col h-16 items-center md:items-start  "> 
       <p className='font-bold text-xl'>JERRIFIED</p>
-      <nav className='pt-8'>
+      <div className="flex md:flex-col items-center md:items-start gap-4">
+      <div className="md:hidden">
+        <GiHamburgerMenu className='text-2xl' />
+      </div>
+      {/* <Button>Button</Button>; */}
+      <nav className='pt-8 hidden md:flex md:flex-col'>
         <ul className="flex gap-2 items-center py-3 cursor-pointer group relative" onClick={() => handleNavigation('/')}>
         <BiHome className='text-xl'/> 
           <h3>Home</h3>
@@ -40,22 +56,23 @@ const SideBar: NextPage = () => {
         </ul>
         
       </nav>
+      <div className=" md:">
+        <BiUserCircle className='text-3xl' />
+      </div>
+      </div>
       </div>
       <div className="flex gap-2 items-center">
-      {session?.user ?
-        <button onClick={() => signOut()}>
-      <div className="">
+      {/* {session?.user ? */}
+        {/* <button onClick={() => signOut()}> */}
+      {/* <div className="">
       <TbLogout className='text-3xl  ' />
       <p className="">Log Out</p>
-      </div>
-        </button> : 
-        <button onClick={() => handleNavigation('/signin')}>
-        <p>log in</p>
-      </button>}
-      {/* <div className="">
-          <TbLogout className='text-3xl  ' />
-          <p className="">Log Out</p>
-          </div> */}
+      </div> */}
+        {/* </button> :  */}
+        {/* <button onClick={() =>  handleNavigation('/signin')}> */}
+          {/* handleNavigation('/signin') */}
+        {/* <p>log in</p> */}
+      {/* </button>} */}
         </div>
     </div>
   )

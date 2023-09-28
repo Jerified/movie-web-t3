@@ -1,12 +1,18 @@
 -- CreateTable
 CREATE TABLE "Movie" (
     "id" TEXT NOT NULL PRIMARY KEY,
+    "movieId" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
-    "director" TEXT NOT NULL,
-    "isAdult" BOOLEAN NOT NULL,
-    "startYear" INTEGER NOT NULL,
+    "backdrop_path" TEXT NOT NULL,
+    "adult" BOOLEAN NOT NULL,
+    "release_date" TEXT NOT NULL,
+    "poster_path" TEXT NOT NULL,
+    "media_type" TEXT NOT NULL,
+    "overview" TEXT NOT NULL,
+    "original_language" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" DATETIME NOT NULL,
+    "userId" INTEGER NOT NULL
 );
 
 -- CreateTable
@@ -54,12 +60,15 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateTable
-CREATE TABLE "_UserFavorites" (
+CREATE TABLE "_Watchlist" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL,
-    CONSTRAINT "_UserFavorites_A_fkey" FOREIGN KEY ("A") REFERENCES "Movie" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "_UserFavorites_B_fkey" FOREIGN KEY ("B") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "_Watchlist_A_fkey" FOREIGN KEY ("A") REFERENCES "Movie" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "_Watchlist_B_fkey" FOREIGN KEY ("B") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Movie_movieId_userId_key" ON "Movie"("movieId", "userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
@@ -77,7 +86,7 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_UserFavorites_AB_unique" ON "_UserFavorites"("A", "B");
+CREATE UNIQUE INDEX "_Watchlist_AB_unique" ON "_Watchlist"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_UserFavorites_B_index" ON "_UserFavorites"("B");
+CREATE INDEX "_Watchlist_B_index" ON "_Watchlist"("B");

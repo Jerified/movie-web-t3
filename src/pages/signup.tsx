@@ -49,7 +49,7 @@ const signUpPage: NextPage = () => {
     <div className="text-black min-h-screen flex place-items-center">
       {/* <div className="flex flex-c"> */}
       
-        <div className="bg-white p-12 w-full md:w-[60%] lg:w-[40%] mx-auto rounded-lg">
+        <div className="bg-white p-8 md:p-6 w-[80%] md:w-[60%] lg:w-[50%] mx-auto rounded-lg">
         <p className='text-3xl font-semibold pb-6'>Register</p>
         
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

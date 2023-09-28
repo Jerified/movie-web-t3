@@ -1,8 +1,10 @@
+"üse client"
+
 import React from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import {BiHome, BiUser, BiUserCircle} from 'react-icons/bi'
 import {BsBookmark} from 'react-icons/bs'
-import {GiHamburgerMenu} from "react-icons/gi"
+import {GiHamburgerMenu, GiTv} from "react-icons/gi"
 import {TbLogout, TbMovie} from 'react-icons/tb'
 import { signIn, signOut, useSession } from "next-auth/react";
 import { NextPage } from 'next';
@@ -26,13 +28,32 @@ const SideBar: NextPage = () => {
     router.push(path)
   }
   return (
-    <div className='pr- md:min-h-screen md:flex flex-col justify-evenly'>
-      <div className="flex justify-between  md:flex-col h-16 items-center md:items-start  "> 
-      <p className='font-bold text-xl'>JERRIFIED</p>
-      <div className="flex md:flex-col items-center md:items-start gap-4">
+    <div className='md:sticky top-0 md:min-h-screen md:flex flex-col justify-evenly items-center'>
+      <div className="flex justify-between md:flex-col h-16 items-center md:items-start   "> 
+      <p className='font-bold text-xl' onClick={() => handleNavigation("/")}>JERRIFIED</p>
       <div className="md:hidden">
-        <GiHamburgerMenu className='text-2xl' />
+        {/* <GiHamburgerMenu className='text-2xl' /> */}
+        <nav className='pt-8 flex gap-4'>
+        <ul className="flex gap-2 items-center py-3 cursor-pointer group relative" onClick={() => handleNavigation('/')}>
+        <BiHome className='text-xl'/> 
+          {/* <span className='absolute bottom-0 left-0 w-fit block after:content-[] origin-right after:duration-200  h-1 bg-blue-800 rounded-l-lg group-hover:w-1/2 group-hover:transition-all'></span> */}
+          {/* <span className='absolute bottom-0 left-1/2 w-0 h-1 bg-blue-800  group-hover:w-1/2 group-hover:transition-all'></span>
+          <span className='absolute bottom-0 right-1/2 w-0 h-1 bg-blue-800 group-hover:w-1/2 group-hover:transition-all transition-duration-100'></span> */}
+        </ul>
+        <ul className="flex gap-2 items-center py-3">
+        <TbMovie className='text-xl'/> 
+        </ul>
+        <ul className="flex gap-2 items-center py-3">
+        <GiTv className='text-xl'/> 
+        </ul>
+        <ul className="flex gap-2 items-center py-3 cursor-pointer">
+        <BsBookmark className='text-xl'/> 
+        </ul>
+        
+      </nav>
       </div>
+      <div className="flex md:flex-col items-center md:items-start gap-4">
+     
       {/* <Button>Button</Button>; */}
       <nav className='pt-8 hidden md:flex md:flex-col'>
         <ul className="flex gap-2 items-center py-3 cursor-pointer group relative" onClick={() => handleNavigation('/')}>
@@ -47,7 +68,7 @@ const SideBar: NextPage = () => {
           <h3>Movie</h3>
         </ul>
         <ul className="flex gap-2 items-center py-3">
-        <BiHome className='text-xl'/> 
+        <GiTv className='text-xl'/> 
           <h3>Tv Series</h3>
         </ul>
         <ul className="flex gap-2 items-center py-3 cursor-pointer">
@@ -56,7 +77,8 @@ const SideBar: NextPage = () => {
         </ul>
         
       </nav>
-      <div className=" md:">
+      <div className=" md:" onClick={() => router.push
+      ("/signin")}>
         <BiUserCircle className='text-3xl' />
       </div>
       </div>

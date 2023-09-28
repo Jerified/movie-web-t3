@@ -21,8 +21,6 @@ interface LoginFormValues {
 
 const LoginPage: NextPage = () => {
   const router = useRouter()
-  // const providers = await getProviders()
-  // console.log(providers);
   
   const login = api.login.adds.useMutation({
     
@@ -39,6 +37,7 @@ const LoginPage: NextPage = () => {
   const onSubmit = async (data: LoginFormValues) => {
     // Handle login logic here
     console.log(data)
+    
     // login.
     await signIn("credentials", {...data, redirect: false, callbackUrl: '/'})
     
@@ -52,7 +51,7 @@ const LoginPage: NextPage = () => {
     <div className="text-black min-h-screen flex place-items-center">
       {/* <div className="flex flex-c"> */}
       
-        <div className="bg-white p-12 w-full md:w-[60%] lg:w-[40%] mx-auto rounded-lg">
+        <div className="bg-white p-8 md:p-6 w-[80%] md:w-[60%] lg:w-[50%] mx-auto rounded-lg">
         <p className='text-3xl font-semibold pb-6'>Login</p>
         
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -117,26 +116,21 @@ const LoginPage: NextPage = () => {
               {/* ? 'Signing in..' : 'Sign in' */}
               <div className="divider">OR</div>
             </div>
-            <div className="">
-            {/* {Object.values(providers).map((provider) => { */}
-              {/* return ( */}
+           
+          </form>
+          <div className="">
             <button
-            // key={provider.id}
-            // , {redirect: false, callbackUrl: `${window.location.origin}`}
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", {redirect: false, callbackUrl: '/'})}
+            // disabled={onSubmit}
             role="button"
              className="flex items-center gap-2 bg-blue-700 text-white font-semibold rounded-md py-2 w-full justify-center text-sm" >
               <FcGoogle className="text-2xl"/>
               CONTINUE WITH GOOGLE
             </button>
-              {/* )  */}
-            {/* })}  */}
           </div>
           <div className="">
           <p className="pt-5">Don't have an account yet? <button className="font-semibold text-blue-600 indent-1" onClick={() => handleNavigation('/signup')}>Sign up</button></p>
           </div>
-          </form>
-         
         </div>
       {/* </div> */}
     </div>

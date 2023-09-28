@@ -76,6 +76,10 @@ export const authOptions: NextAuthOptions = {
             try {
               const creds = await loginSchema.parseAsync(credentials)
 
+              if (!creds.email || !creds.password) {
+                throw new Error ("Email and password required")
+              }
+
               const result = await prisma.user.findFirst({
                 where: {
                   email: creds.email

@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { loginRouter } from "~/server/api/routers/login";
+import { loginRouter } from "./routers/login";
 import { signupRouter } from "./routers/signup";
+import { bookmarkRouter } from "./routers/bookmark";
 
 /**
  * This is the primary router for your server.
@@ -9,7 +10,9 @@ import { signupRouter } from "./routers/signup";
  */
 export const appRouter = createTRPCRouter({
   login: loginRouter,
-  signup: signupRouter
+  signup: signupRouter,
+  addtoBookmark: bookmarkRouter,
+  removefreomBookmark: bookmarkRouter
 });
 
 // export type definition of API

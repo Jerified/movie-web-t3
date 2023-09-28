@@ -11,20 +11,49 @@ datasource db {
   // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#String
   url      = env("DATABASE_URL")
 }
 
+// original_title: String
+//   adult: boolean,
+//   backdrop_path: String,
+//   media_type: String,
+//   original_language: String,
+//   overview: String,
+//   poster_path: String,
+//   title: String,
+//   release_date: String
+
 model Movie {
-  id        String   @id @default(cuid())
-  title     String
-  director  String
-  isAdult   Boolean
-  startYear Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  favorites User[]   @relation("UserFavorites")
+  id            String   @id @default(cuid())
+  movieId String
+  imdb_id String?
+  original_title String?
+  adult Boolean?
+  backdrop_path String?
+  media_type String?
+  original_language String?
+  overview String?
+  poster_path String?
+  title String?
+  release_date String?
+  vote_average Int?
+  vote_count Int?
+  runtime Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId String
+  // isFavorite Boolean @default(false)
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // @@index([userId])
+  @@unique([movieId, userId])
 }
+
+// model Genre {
+//   id Int
+//   name String
+// }
 
 // Necessary for Next auth
 model Account {
@@ -63,7 +92,9 @@ model User {
   username      String
   accounts      Account[]
   sessions      Session[]
-  favorites     Movie[]   @relation("UserFavorites")
+  // favorites  Movie[]
+  movie     Movie[]   
+  // @relation("Watchlist")
 }
 
 model VerificationToken {

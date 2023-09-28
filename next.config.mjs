@@ -7,7 +7,10 @@ await import("./src/env.mjs");
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-
+  images: { 
+    domains: ['image.tmdb.org']
+    
+  },
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
    * out.
@@ -18,5 +21,6 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+ 
 };
 export default config;

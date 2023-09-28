@@ -33,16 +33,8 @@ const Trending = () => {
   return (    
     <div>
       <h1 className="text-3xl font-light">Trending</h1>
-      <div className="carousel carousel-center rounded-box pt-4">
-      {movies.map((movie: Movie) => (
-        <div className="carousel-item">
-            <Image src={movie.backdrop_path} width={120} height={120} alt={movie.title} />
-        <h1 className="" key={movie.id}>{movie.original_title
-        }</h1>
-        </div>
-      ))}
-      </div>
-    </div>
+      
+    </>
   )
 }
 

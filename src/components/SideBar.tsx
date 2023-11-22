@@ -59,7 +59,6 @@ const SideBar: NextPage = () => {
         <ul className="flex gap-2 items-center py-3 cursor-pointer group relative" onClick={() => handleNavigation('/')}>
         <BiHome className='text-xl'/> 
           <h3>Home</h3>
-          {/* <span className='absolute bottom-0 left-0 w-fit block after:content-[] origin-right after:duration-200  h-1 bg-blue-800 rounded-l-lg group-hover:w-1/2 group-hover:transition-all'></span> */}
           <span className='absolute bottom-0 left-1/2 w-0 h-1 bg-blue-800  group-hover:w-1/2 group-hover:transition-all'></span>
           <span className='absolute bottom-0 right-1/2 w-0 h-1 bg-blue-800 group-hover:w-1/2 group-hover:transition-all transition-duration-100'></span>
         </ul>

@@ -29,11 +29,11 @@ const SideBar: NextPage = () => {
   }
   return (
     <div className='md:sticky top-0 md:min-h-screen md:flex flex-col justify-evenly items-center'>
-      <div className="flex justify-between md:flex-col h-16 items-center md:items-start   "> 
+      <div className="flex justify-between md:flex-col h-16 items-center md:items-start"> 
       <p className='font-bold text-xl' onClick={() => handleNavigation("/")}>JERRIFIED</p>
       <div className="md:hidden">
         {/* <GiHamburgerMenu className='text-2xl' /> */}
-        <nav className='pt-8 flex gap-4'>
+        <nav className='md:pt-8 flex gap-4'>
         <ul className="flex gap-2 items-center py-3 cursor-pointer group relative" onClick={() => handleNavigation('/')}>
         <BiHome className='text-xl'/> 
           {/* <span className='absolute bottom-0 left-0 w-fit block after:content-[] origin-right after:duration-200  h-1 bg-blue-800 rounded-l-lg group-hover:w-1/2 group-hover:transition-all'></span> */}

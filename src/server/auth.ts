@@ -121,7 +121,7 @@ export const authOptions: NextAuthOptions = {
             // })
         } catch(err) {
           console.log(err);
-          
+          return null;
         } 
     }
   }) 

@@ -1,52 +1,83 @@
-import React, { ReactNode, createContext, useState } from "react";
+import React, { ReactNode, createContext, useEffect, useState } from "react";
 import { api } from '~/utils/api'
 
 
+interface Movie {
+  id: number,
+  original_title: string
+  adult: boolean,
+  backdrop_path: string,
+  media_type: string,
+  original_language: string,
+  overview: string,
+  poster_path: string,
+  title: string,
+  release_date: string
+}
 
 interface BookmarksState {
   [key: string]: boolean;
 }
 
 interface BookmarkContextType {
-  handleToggle: (id: string, add: any) => void;
-  bookmarks: BookmarksState;
+  toggleBookmark: (movie: Movie) => void;
+  bookmarks: Movie[];
+  isBookmarked: (movie: Movie) => boolean
+
 }
 
-const bookmarkContext = createContext<BookmarkContextType | null>(null);
+const bookmarkContext = createContext<BookmarkContextType>({
+  bookmarks: [],
+  toggleBookmark: () => {},
+  isBookmarked: () => false
+});
 
 const BookmarksProvider = ({ children }: {children: ReactNode}) => {
-  const addBookmark = api.addtoBookmark.add.useMutation({
+  // const addBookmark = api.addtoBookmark.add.useMutation({
 
-  })
+  // })
 
-  const [bookmarks, setBookmarks] = useState<BookmarksState>({});
+  const [bookmarks, setBookmarks] = useState<Movie[]>([]);
 
-  const handleToggle = (movie: any) => {
-    setBookmarks((prevBookmarks) => ({
-      ...prevBookmarks,
-      [movie.id]: !prevBookmarks[movie.id]
-    }));
-    addBookmark.mutate({
-      // imdb_id: movie.imdb_id,
-      // original_title: movie.original_title,
-      movieId: movie.id,
-      // imdb_id: "",
-      // adult: false,
-      // backdrop_path: "",
-      // media_type: movie.media_type,
-      // original_language: "",
-      // overview: "",
-      // poster_path: "",
-      // title: "",
-      // release_date: "",
-      // vote_average: 0,
-      // vote_count: 0,
-      // runtime: 0
-    })
-  };
+  // const handleToggle = (id: string) => {
+  //   return (event: React.MouseEvent<HTMLDivElement>) => {
+  //     event.stopPropagation();
+  //     setBookmarks((prevBookmarks) => {
+  //       const newBookmarks = {
+  //         ...prevBookmarks,
+  //         [id]: !prevBookmarks[id]
+  //       };
+  //       return newBookmarks;
+  //     });
+  //   };
+  // };
 
+  useEffect(() => {
+    const storedBookmarks = localStorage.getItem("bookmarks")
+    if (storedBookmarks) {
+      setBookmarks(JSON.parse(storedBookmarks))
+    }
+  }, []);
+
+  useEffect(() => {
+     localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+  }, []);
+
+  const toggleBookmark = (movie: Movie) => {
+    const index = bookmarks.findIndex((m) => m.id === movie.id)
+    if (index !== -1) {
+      setBookmarks((prev) => prev.filter((m) => m.id !== movie.id))
+    } else {
+      setBookmarks((prev) => [...prev, movie])
+    }
+  }
+
+  const isBookmarked = (movie: Movie) => {
+    return bookmarks.some((m) => m.id === movie.id)
+  }
+  
   return (
-    <bookmarkContext.Provider value={{ handleToggle, bookmarks }}>
+    <bookmarkContext.Provider value={{ toggleBookmark, bookmarks, isBookmarked }}>
       {children}
     </bookmarkContext.Provider>
   );

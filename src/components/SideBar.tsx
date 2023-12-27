@@ -10,6 +10,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { NextPage } from 'next';
 import { Button } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import Link from 'next/link'
 // import {
 //   PresentationChartBarIcon,
 //   ShoppingBagIcon,
@@ -62,18 +63,18 @@ const SideBar: NextPage = () => {
           <span className='absolute bottom-0 left-1/2 w-0 h-1 bg-blue-800  group-hover:w-1/2 group-hover:transition-all'></span>
           <span className='absolute bottom-0 right-1/2 w-0 h-1 bg-blue-800 group-hover:w-1/2 group-hover:transition-all transition-duration-100'></span>
         </ul>
-        <ul className="flex gap-2 items-center py-3">
+        <Link href={'/movies'} className="flex gap-2 items-center py-3">
         <TbMovie className='text-xl'/> 
           <h3>Movie</h3>
-        </ul>
+        </Link>
         <ul className="flex gap-2 items-center py-3">
         <GiTv className='text-xl'/> 
           <h3>Tv Series</h3>
         </ul>
-        <ul className="flex gap-2 items-center py-3 cursor-pointer">
+        <Link href={'/bookmark'} className="flex gap-2 items-center py-3 cursor-pointer">
         <BsBookmark className='text-xl'/> 
           <h3>Bookmarked</h3>
-        </ul>
+        </Link>
         
       </nav>
       <div className=" md:" onClick={() => router.push
